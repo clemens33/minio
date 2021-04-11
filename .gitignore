@@ -1,0 +1,5 @@
+data
+config/certs
+config/session
+config/share
+config/config.json*
