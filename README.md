@@ -6,11 +6,12 @@
 - clone/fork this repo and cd into it
 - start using using the following command (copy all and run) - change password/ports as wanted (expects a folder under ~/data/minio where minio will be persisted)
 ```
-ln -s ~/data/minio ./data && \
+export MINIO_STORAGE_LOCATION=~/data/minio && \
 export MINIO_PORT=9001 && \
 export MINIO_CONSOLE_PORT=9091 && \
 export MINIO_ROOT_USER=minio && \
 export MINIO_ROOT_PASSWORD=minio123 && \
+ln -s $MINIO_STORAGE_LOCATION ./data && \
 docker-compose pull && \
 docker-compose up --remove-orphans -d && \
 alias mc='docker exec -it minio-client mc'
@@ -30,7 +31,7 @@ mc admin policy set minio consoleAdmin user=$MINIO_CONSOLE_USER
 #### simple setup using cron
 
 - define a simple bash script - refer to [sample](.start.sh)
-- add the following line to cron (crontab -e)
+- add the following line to cron (crontab -e) - starts docker containers serving minio 30s after reboot
 
 ```
 @reboot (sleep 30s; ~/docker/minio/start.sh)&

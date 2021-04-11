@@ -2,11 +2,13 @@
 
 cd ~/docker/minio
 
-ln -s /data/minio ./data
+export MINIO_STORAGE_LOCATION=~/data/minio
 export MINIO_PORT=9001
 export MINIO_CONSOLE_PORT=9091
 export MINIO_ROOT_USER=minio
 export MINIO_ROOT_PASSWORD=minio123
+
+ln -s /data/minio ./data
 
 docker-compose pull
 docker-compose up --remove-orphans -d

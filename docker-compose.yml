@@ -16,8 +16,7 @@ services:
     restart: always      
     environment:
       MINIO_ROOT_USER: "${MINIO_ROOT_USER}"
-      MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD}"
-      #MINIO_REGION_NAME: home
+      MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD}"      
     command: server /data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
@@ -27,30 +26,28 @@ services:
 
   minio-console:
     container_name: minio-console
+    restart: always
     image: minio/console:latest
     ports:
       - "${MINIO_CONSOLE_PORT}:9090"
     networks:
       - minio_network
-    command: server
-    restart: always
+    command: server    
     environment:
-      #- CONSOLE_PBKDF_PASSPHRASE=console123
-      #- CONSOLE_PBKDF_SALT=console123
       - CONSOLE_MINIO_SERVER=http://minio:9000
     depends_on:
       - minio
 
   minio-client:
     container_name: minio-client
+    restart: always
     image: minio/mc:latest
     volumes:
       - ./config:/root/.mc
     depends_on:
       - minio
     networks:
-      - minio_network    
-    restart: always
+      - minio_network        
     entrypoint: >
       /bin/sh -c "
       /usr/bin/mc config host rm minio;
