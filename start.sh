@@ -8,7 +8,10 @@ export MINIO_CONSOLE_PORT=9091
 export MINIO_ROOT_USER=minio
 export MINIO_ROOT_PASSWORD=minio123
 
-ln -s $MINIO_STORAGE_LOCATION ./data
+# only create sym link if not existing
+if [ ! -d "./data" ]; then ln -s $MINIO_STORAGE_LOCATION ./data; fi
+
+
 
 docker-compose pull
 docker-compose up --remove-orphans -d
